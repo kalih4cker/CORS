@@ -15,11 +15,27 @@ By default, browsers block cross-origin requests unless the server explicitly al
 
 When testing, look for the following headers in the **HTTP response**:
 
-```http
-Access-Control-Allow-Origin: https://example.com
-Access-Control-Allow-Credentials: true
+```Access-Control-Allow-Origin: https://example.com```
+```Access-Control-Allow-Credentials: true```
 
-**## Exploition**
-if it allowed the origin given by you then you can use the script given above to exploit
-change the url in this part in script 
-` xhttp.open("GET", " **Paste url here** ", true);`
+---
+
+## Testing for CORS Misconfiguration
+
+1. Intercept a request using **Burp Suite**, **curl**, or any HTTP proxy tool.
+2. Modify the request to include a **custom `Origin` header**:
+   ```Origin: https://evil.com```
+3.Send the request and observe the response headers.
+
+##  Vulnerable If:
+The response reflects your custom origin:
+
+```Access-Control-Allow-Origin: https://evil.com```
+And the following is also present:
+
+```Access-Control-Allow-Credentials: true```
+If both are true, the application is likely vulnerable to CORS exploitatio
+
+## Exploitation
+If vulnerable, you can exploit it using a script like this hosted on repo as **cors.html** :
+add url in this part ``` xhttp.open("GET", **"https:example.com"**, true);```
